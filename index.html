@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- 
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Schedule Your Call - Automate calls by scheduling them with a specific mobile number and date/time.">
   <meta name="keywords" content="AutoCallScheduler, schedule call, automated call, schedule call app, call scheduling">
@@ -15,6 +14,7 @@
   <meta name="og:image" content="https://www.online-stopwatch.com/images/eggtimer.gif">
   <title>Schedule Your Call - AutoCallScheduler</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       background-color: #000;
@@ -32,33 +32,32 @@
     }
   </style>
   <style>
-  /* Style for placeholder text */
-  ::placeholder {
-    /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: transparent;
-    opacity: 1; /* Firefox */
-  }
+    /* Style for placeholder text */
+    ::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: transparent;
+      opacity: 1; /* Firefox */
+    }
 
-  /* Style for placeholder text in Firefox */
-  :-moz-placeholder {
-    color: transparent;
-    opacity: 1;
-  }
+    /* Style for placeholder text in Firefox */
+    :-moz-placeholder {
+      color: transparent;
+      opacity: 1;
+    }
 
-  /* Style for placeholder text in Safari */
-  ::-webkit-input-placeholder {
-    color: transparent;
-  }
+    /* Style for placeholder text in Safari */
+    ::-webkit-input-placeholder {
+      color: transparent;
+    }
 
-  /* Style for input fields */
-  input {
-    background-image: linear-gradient(to right, #00ff00, #00b300); /* Green gradient */
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-    
-</style>
+    /* Style for input fields */
+    input {
+      background-image: linear-gradient(to right, #00ff00, #00b300); /* Green gradient */
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  </style>
 </head>
 <body>
   <div class="container mx-auto px-4 py-8">
@@ -69,14 +68,14 @@
         <span class="text-4xl font-bold mr-4 md:text-5xl" id="timerDisplay">00:00:00</span>
       </div>
     </div>
-   <div class="flex flex-col md:flex-row justify-center mt-4">
-  <!-- Input field with default number and readonly attribute -->
-  <input id="mobileNumber" type="tel" pattern="[0-9]{10}" value="8520134679" readonly class="px-4 py-2 w-full md:w-64 border rounded text-lg mb-4 md:mb-0 md:mr-4">
-  <input id="callDateTime" type="datetime-local" required class="px-4 py-2 w-full md:w-64 border rounded text-lg mb-4 md:mb-0 md:mr-4">
-  <button id="startTimer" class="px-4 py-2 w-full md:w-auto bg-blue-500 text-white rounded shadow hover:bg-blue-700">Schedule Call</button>
-</div>
-
+    <div class="flex flex-col md:flex-row justify-center mt-4">
+      <!-- Input field with default number and readonly attribute -->
+      <input id="mobileNumber" type="tel" pattern="[0-9]{10}" value="8520134679" readonly class="px-4 py-2 w-full md:w-64 border rounded text-lg mb-4 md:mb-0 md:mr-4">
+      <input id="callDateTime" type="datetime-local" required class="px-4 py-2 w-full md:w-64 border rounded text-lg mb-4 md:mb-0 md:mr-4">
+      <button id="startTimer" class="px-4 py-2 w-full md:w-auto bg-blue-500 text-white rounded shadow hover:bg-blue-700">Schedule Call</button>
+    </div>
   </div>
+
   <script>
     const timerDisplay = document.getElementById('timerDisplay');
     const mobileNumberInput = document.getElementById('mobileNumber');
@@ -122,7 +121,12 @@
         startTimer(Math.ceil(timeDifference / 1000)); // Convert milliseconds to seconds
         startTimerButton.disabled = true;
       } else {
-        alert('Invalid input. Please enter a valid Indian mobile number and schedule the call within the next 100 days.');
+        // Use SweetAlert for alerts
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Invalid input. Please enter a valid Indian mobile number and schedule the call within the next 100 days.',
+        });
       }
     });
   </script>

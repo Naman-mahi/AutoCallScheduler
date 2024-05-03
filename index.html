@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Your Call</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      animation: gradientAnimation 10s ease infinite alternate;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-color: #000;
+      }
+      100% {
+        background-color: #222;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-4">Schedule Your Call</h1>
+    <div class="flex justify-center items-center mt-8">
+      <div class="timer-container">
+        <span class="timer-label text-3xl"></span>
+        <span class="text-4xl font-bold mr-4 md:text-5xl" id="timerDisplay">00:00:00</span>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row justify-center mt-4">
+      <input id="mobileNumber" type="tel" pattern="[0-9]{10}" required placeholder="Enter 10-digit mobile number" class="px-4 py-2 w-full md:w-64 border rounded text-lg mb-4 md:mb-0 md:mr-4">
+      <input id="callDateTime" type="datetime-local" required class="px-4 py-2 w-full md:w-64 border rounded text-lg mb-4 md:mb-0 md:mr-4">
+      <button id="startTimer" class="px-4 py-2 w-full md:w-auto bg-blue-500 text-white rounded shadow hover:bg-blue-700">Schedule Call</button>
+    </div>
+  </div>
+  <script>
+    const timerDisplay = document.getElementById('timerDisplay');
+    const mobileNumberInput = document.getElementById('mobileNumber');
+    const callDateTimeInput = document.getElementById('callDateTime');
+    let remainingTime = 0;
+    let intervalId = null;
+
+    function startTimer(duration) {
+      remainingTime = duration;
+      updateTimerDisplay();
+
+      intervalId = setInterval(() => {
+        if (remainingTime > 0) {
+          remainingTime--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(intervalId);
+          dial(mobileNumberInput.value); // Call the number provided by the user
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const hours = Math.floor(remainingTime / 3600);
+      const minutes = Math.floor((remainingTime % 3600) / 60);
+      const seconds = remainingTime % 60;
+      timerDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function dial(number) {
+      const callLink = `tel:${number}`;
+      window.location.href = callLink;
+    }
+
+    const startTimerButton = document.getElementById('startTimer');
+
+    startTimerButton.addEventListener('click', () => {
+      const callDateTime = new Date(callDateTimeInput.value).getTime();
+      const currentTime = new Date().getTime();
+      const timeDifference = callDateTime - currentTime;
+
+      if (mobileNumberInput.value.length === 10 && timeDifference > 0 && timeDifference <= 100 * 24 * 3600 * 1000) {
+        startTimer(Math.ceil(timeDifference / 1000)); // Convert milliseconds to seconds
+        startTimerButton.disabled = true;
+      } else {
+        alert('Invalid input. Please enter a valid Indian mobile number and schedule the call within the next 100 days.');
+      }
+    });
+  </script>
+</body>
+</html>
